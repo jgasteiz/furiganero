@@ -10,17 +10,17 @@ app = fastapi.FastAPI()
 templates = templating.Jinja2Templates(directory="templates")
 
 
-@app.get("/furiganise/")
-async def furiganise(q: str = ""):
-    return models.Furiganised(
+@app.get("/furiganize/")
+async def furiganize(q: str = ""):
+    return models.KakasiResult(
         text=q,
         result=pykakasi.kakasi().convert(q),
     )
 
 
-@app.get("/furiganise_html/", response_class=responses.HTMLResponse)
-def furiganise_html(request: fastapi.Request, q: str = ""):
-    furiganised = models.Furiganised(
+@app.get("/furiganize_html/", response_class=responses.HTMLResponse)
+def furiganize_html(request: fastapi.Request, q: str = ""):
+    result = models.KakasiResult(
         text=q,
         result=pykakasi.kakasi().convert(q),
     )
@@ -28,7 +28,7 @@ def furiganise_html(request: fastapi.Request, q: str = ""):
         name="index.html",
         context={
             "request": request,
-            "content": furiganised.get_html(),
+            "content": result.get_html(),
         },
     )
 

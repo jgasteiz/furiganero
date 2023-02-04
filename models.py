@@ -1,7 +1,7 @@
 import pydantic
 
 
-class Furiganised(pydantic.BaseModel):
+class KakasiResult(pydantic.BaseModel):
     text: str
     result: list[dict[str, str]]
 
