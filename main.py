@@ -19,18 +19,21 @@ async def furiganize(q: str = ""):
 
 
 @app.get("/furiganize_html/", response_class=responses.HTMLResponse)
-def furiganize_html(request: fastapi.Request, q: str = ""):
+def furiganize_html(request: fastapi.Request, q: str = "", include_body: bool = True):
     result = models.KakasiResult(
         text=q,
         result=pykakasi.kakasi().convert(q),
     )
-    return templates.TemplateResponse(
-        name="index.html",
-        context={
-            "request": request,
-            "content": result.get_html(),
-        },
-    )
+    if include_body:
+        return templates.TemplateResponse(
+            name="index.html",
+            context={
+                "request": request,
+                "content": result.get_html(),
+            },
+        )
+    else:
+        return responses.HTMLResponse(content=result.get_html())
 
 
 if __name__ == "__main__":
